@@ -5,15 +5,15 @@ This is a sample application that demonstrates usage of the Sentry Github Deploy
 # Setting up
 
 ```
-# Copy the env file template to .env and fill it in
+# Copy the env file template to .env
 cp .env.tmpl .env
 
-# Modify .env to have your real configuration
+# Modify .env to replace instances of "${VARIABLE}" with your variable values for your configuration
 ```
 
 # Running the app locally
 
-`node index.js`
+`npm run run`
 
 # Build and run a container
 ````
