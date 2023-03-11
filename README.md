@@ -2,6 +2,15 @@
 
 This is a sample application that demonstrates usage of the Sentry Github Deployment Gate integration application
 
+# Setting up
+
+```
+# Copy the env file template to .env and fill it in
+cp .env.tmpl .env
+
+# Modify .env to have your real configuration
+```
+
 # Running the app locally
 
 node index.js

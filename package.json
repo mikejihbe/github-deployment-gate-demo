@@ -4,6 +4,7 @@
   "description": "A demo application demonstrating how the Sentry github deployment gate integration application functions",
   "main": "index.js",
   "scripts": {
+    "run": "env-cmd node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,6 +24,8 @@
   },
   "homepage": "https://github.com/getsentry/github-deployment-gate-demo#readme",
   "dependencies": {
+    "@sentry/node": "^7.42.0",
+    "env-cmd": "^10.1.0",
     "express": "^4.18.2"
   }
 }
