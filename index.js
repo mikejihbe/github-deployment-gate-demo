@@ -5,7 +5,11 @@ const app = express()
 const port = 3000
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+    res.send('Hello World!')
+})
+
+app.get('/error', (req, res) => {
+    throw new Error("Unexpected Error " + Math.floor(Math.random() * 1000000000))
 })
 
 
@@ -15,7 +19,7 @@ Sentry.init({
     integrations: [
         // ...
     ],
-    });
+});
   
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.errorHandler());
