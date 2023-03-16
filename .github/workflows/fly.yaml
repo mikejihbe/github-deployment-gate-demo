@@ -9,7 +9,7 @@ jobs:
   # Github deployment protection rules require that an environment is protected. 
   # So, defining a "canary" deployment and environment that is NOT protected by a 
   # rule that is the recommended way to use this
-  deploy:
+  deploy_production_canary:
     name: Deploy Canary
     runs-on: ubuntu-latest
     environment: 
@@ -29,7 +29,7 @@ jobs:
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-  deploy:
+  deploy_production:
     name: Full Rollout
     runs-on: ubuntu-latest
     environment: 
