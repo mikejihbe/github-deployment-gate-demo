@@ -4,11 +4,36 @@ on:
     branches:
       - main
 jobs:
+  # These deploy blocks are essentially identical for this trivial use case, 
+  # but this does illustrate usage. 
+  # Github deployment protection rules require that an environment is protected. 
+  # So, defining a "canary" deployment and environment that is NOT protected by a 
+  # rule that is the recommended way to use this
   deploy:
-    name: Deploy app
+    name: Deploy Canary
     runs-on: ubuntu-latest
     environment: 
-      name: "Fly.io Deployment"
+      name: "production-canary"
+      url: https://github-deployment-gate-demo.fly.dev/
+    steps:
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Render application .env
+        uses: nowactions/envsubst@v1
+        with:
+          input: ./.env.tmpl
+          output: ./.env
+        env:
+          IMAGE_TAG: docker.io/library/github-deployment-gate-demo:${{ github.sha }}
+          SENTRY_DSN: ${{secrets.SENTRY_DSN}}
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  deploy:
+    name: Full Rollout
+    runs-on: ubuntu-latest
+    environment: 
+      name: "production"
       url: https://github-deployment-gate-demo.fly.dev/
     steps:
       - uses: actions/checkout@v3
