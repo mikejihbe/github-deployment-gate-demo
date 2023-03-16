@@ -21,4 +21,3 @@ docker build -t mikejihbe/github-deployment-gate-demo:v0.0.1
 docker run -it -p 3000:3000 mikejihbe/github-deployment-gate-demo:v0.0.1
 ```
 
-
