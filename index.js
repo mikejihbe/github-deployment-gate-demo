@@ -1,40 +1,36 @@
-const express = require('express')
-const Sentry = require('@sentry/node');
+const express = require("express");
+const Sentry = require("@sentry/node");
 
-const app = express()
-const port = 3000
+const app = express();
+const port = 3000;
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+app.get("/", (req, res) => {
+  res.send("Hello World! Deployment 1");
+});
 
-app.get('/error', (req, res) => {
-    throw new Error("Unexpected Error " + Math.floor(Math.random() * 1000000000))
-})
-
+app.get("/error", (req, res) => {
+  throw new Error("Unexpected Error " + Math.floor(Math.random() * 1000000000));
+});
 
 // Set up Sentry
 Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    integrations: [
-        // ...
-    ],
+  dsn: process.env.SENTRY_DSN,
+  integrations: [
+    // ...
+  ],
 });
-  
+
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.errorHandler());
 
 // Optional fallthrough error handler
 app.use(function onError(err, req, res, next) {
-    // The error id is attached to `res.sentry` to be returned
-    // and optionally displayed to the user for support.
-    res.statusCode = 500;
-    res.end(res.sentry + "\n");
+  // The error id is attached to `res.sentry` to be returned
+  // and optionally displayed to the user for support.
+  res.statusCode = 500;
+  res.end(res.sentry + "\n");
 });
 
-
-
-
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});
