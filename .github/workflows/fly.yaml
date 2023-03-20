@@ -38,7 +38,7 @@ jobs:
           # SENTRY_URL: https://sentry.io/
         with:
           environment: production
-          ignore_missing: true
+          ignore_empty: true
   deploy_production:
     name: Full Rollout
     runs-on: ubuntu-latest
