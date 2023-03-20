@@ -4,15 +4,15 @@ on:
     branches:
       - main
 jobs:
-  # These deploy blocks are essentially identical for this trivial use case, 
-  # but this does illustrate usage. 
-  # Github deployment protection rules require that an environment is protected. 
-  # So, defining a "canary" deployment and environment that is NOT protected by a 
+  # These deploy blocks are essentially identical for this trivial use case,
+  # but this does illustrate usage.
+  # Github deployment protection rules require that an environment is protected.
+  # So, defining a "canary" deployment and environment that is NOT protected by a
   # rule that is the recommended way to use this
   deploy_production_canary:
     name: Deploy Canary
     runs-on: ubuntu-latest
-    environment: 
+    environment:
       name: "production-canary"
       url: https://github-deployment-gate-demo.fly.dev/
     steps:
@@ -29,10 +29,34 @@ jobs:
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Download Sentry CLI
+        run: curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION="2.2.0" bash
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ihbe-test-org
+          SENTRY_PROJECT: github-deployment-gate-demo
+      - name: Create new Sentry Release
+        run: sentry-cli releases new `sentry-cli releases propose-version`
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ihbe-test-org
+          SENTRY_PROJECT: github-deployment-gate-demo
+      - name: Set commits
+        run: sentry-cli releases set-commits `sentry-cli releases propose-version` --auto
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ihbe-test-org
+          SENTRY_PROJECT: github-deployment-gate-demo
+      - name: Finalize Sentry release
+        run: sentry-cli releases finalize `sentry-cli releases propose-version`
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ihbe-test-org
+          SENTRY_PROJECT: github-deployment-gate-demo
   deploy_production:
     name: Full Rollout
     runs-on: ubuntu-latest
-    environment: 
+    environment:
       name: "production"
       url: https://github-deployment-gate-demo.fly.dev/
     steps:
