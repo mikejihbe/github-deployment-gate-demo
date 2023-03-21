@@ -5,11 +5,11 @@ const app = express();
 const port = 3000;
 
 app.get("/", (req, res) => {
-  res.send("Hello World! Deployment 1");
+  res.send("Hello World! Deployment: " + process.env.VERSION);
 });
 
 app.get("/error", (req, res) => {
-  throw new Error("Unexpected Error " + Math.floor(Math.random() * 1000000000));
+  throw new Error("Unexpected Error " + process.env.VERSION + ": " + Math.floor(Math.random() * 1000000000));
 });
 
 // Set up Sentry
