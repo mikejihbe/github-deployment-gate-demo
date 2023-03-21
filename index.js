@@ -9,7 +9,12 @@ app.get("/", (req, res) => {
 });
 
 app.get("/error", (req, res) => {
-  throw new Error("Unexpected Error " + process.env.VERSION + ": " + Math.floor(Math.random() * 1000000000));
+  throw new Error(
+    "Unexpected Error " +
+      process.env.VERSION +
+      ": " +
+      Math.floor(Math.random() * 1000000000)
+  );
 });
 
 // Set up Sentry
