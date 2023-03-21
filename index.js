@@ -15,6 +15,7 @@ app.get("/error", (req, res) => {
 // Set up Sentry
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
+  release: process.env.VERSION,
   integrations: [
     // ...
   ],

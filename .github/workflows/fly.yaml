@@ -26,6 +26,7 @@ jobs:
         env:
           IMAGE_TAG: docker.io/library/github-deployment-gate-demo:${{ github.sha }}
           SENTRY_DSN: ${{secrets.SENTRY_DSN}}
+          VERSION: ${{ github.sha }}
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
@@ -56,6 +57,7 @@ jobs:
         env:
           IMAGE_TAG: docker.io/library/github-deployment-gate-demo:${{ github.sha }}
           SENTRY_DSN: ${{secrets.SENTRY_DSN}}
+          VERSION: ${{ github.sha }}
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
