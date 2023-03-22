@@ -11,12 +11,12 @@ app.get("/", (req, res) => {
 app.get("/error", (req, res) => {
   const randomValue = Math.floor(Math.random() * 1000000000);
   const fingerprint = [`${process.env.VERSION}:${randomValue}`];
-  Sentry.captureException(
-    new Error("Unexpected Error " + process.env.VERSION + ": " + randomValue),
-    {
-      fingerprint: fingerprint,
-    }
+  const error = new Error(
+    "Unexpected Error " + process.env.VERSION + ": " + randomValue
   );
+  Sentry.captureException(error, {
+    fingerprint: fingerprint,
+  });
   throw error;
 });
 
